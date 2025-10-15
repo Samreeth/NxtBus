@@ -85,6 +85,9 @@ dependencies {
     // Razorpay Checkout SDK
     implementation("com.razorpay:checkout:1.6.33")
 
+    // Lottie for JSON animations
+    implementation("com.airbnb.android:lottie-compose:6.0.1")
+
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

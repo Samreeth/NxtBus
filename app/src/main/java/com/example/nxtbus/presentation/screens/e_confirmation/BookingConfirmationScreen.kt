@@ -54,6 +54,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.zIndex
+import com.example.nxtbus.presentation.components.LottieSuccessAnimation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -237,13 +238,14 @@ private fun ThankYouHeader() {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SuccessCheckAnimation(diameter = 120.dp)
+        // Lottie success animation
+        LottieSuccessAnimation(size = 120.dp, loop = false)
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "Thank You !",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFF5C3B1E) /* keep color family; adjust if needed */
+            color = Color(0xFF5C3B1E)
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
@@ -254,102 +256,6 @@ private fun ThankYouHeader() {
     }
 }
 
-@Composable
-private fun SuccessCheckAnimation(
-    diameter: Dp = 120.dp,
-    circleColor: Color = PrimaryBlue,
-    checkColor: Color = Color(0xFF2E7D32)
-) {
-    val scale = remember { Animatable(0.6f) }
-    val progress = remember { Animatable(0f) }
-
-    LaunchedEffect(Unit) {
-        // Pop-in circle
-        scale.animateTo(
-            targetValue = 1f,
-            animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
-        )
-        // Draw check
-        progress.animateTo(
-            targetValue = 1f,
-            animationSpec = tween(durationMillis = 700)
-        )
-    }
-
-    Box(
-        modifier = Modifier
-            .size(diameter)
-            .graphicsLayer {
-                scaleX = scale.value
-                scaleY = scale.value
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val minDim = size.minDimension
-            // Outer circle
-            drawCircle(
-                color = circleColor.copy(alpha = 0.12f),
-                radius = minDim / 2f
-            )
-            // Middle circle
-            drawCircle(
-                color = circleColor.copy(alpha = 0.18f),
-                radius = minDim / 2.6f
-            )
-            // Solid inner circle
-            drawCircle(
-                color = circleColor,
-                radius = minDim / 3.2f
-            )
-
-            // Animated checkmark
-            val w = size.width
-            val h = size.height
-            val start = Offset(x = w * 0.32f, y = h * 0.54f)
-            val mid = Offset(x = w * 0.46f, y = h * 0.68f)
-            val end = Offset(x = w * 0.72f, y = h * 0.40f)
-
-            val len1 = hypot((mid.x - start.x).toDouble(), (mid.y - start.y).toDouble()).toFloat()
-            val len2 = hypot((end.x - mid.x).toDouble(), (end.y - mid.y).toDouble()).toFloat()
-            val total = len1 + len2
-            val drawLen = total * progress.value
-
-            // Draw first segment (start -> mid)
-            if (drawLen > 0f) {
-                val seg1 = drawLen.coerceAtMost(len1)
-                val t1 = if (len1 > 0f) seg1 / len1 else 1f
-                val p1 = Offset(
-                    x = start.x + (mid.x - start.x) * t1,
-                    y = start.y + (mid.y - start.y) * t1
-                )
-                drawLine(
-                    color = checkColor,
-                    start = start,
-                    end = p1,
-                    strokeWidth = 8f,
-                    cap = StrokeCap.Round
-                )
-            }
-            // Draw second segment (mid -> end)
-            if (drawLen > len1) {
-                val seg2 = (drawLen - len1).coerceAtMost(len2)
-                val t2 = if (len2 > 0f) seg2 / len2 else 1f
-                val p2 = Offset(
-                    x = mid.x + (end.x - mid.x) * t2,
-                    y = mid.y + (end.y - mid.y) * t2
-                )
-                drawLine(
-                    color = checkColor,
-                    start = mid,
-                    end = p2,
-                    strokeWidth = 8f,
-                    cap = StrokeCap.Round
-                )
-            }
-        }
-    }
-}
 
 @Composable
 private fun TicketCard(booking: Booking) {
