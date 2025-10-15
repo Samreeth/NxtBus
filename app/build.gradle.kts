@@ -88,6 +88,10 @@ dependencies {
     // Lottie for JSON animations
     implementation("com.airbnb.android:lottie-compose:6.0.1")
 
+    // Media3 ExoPlayer for full-screen video splash
+    implementation("androidx.media3:media3-exoplayer:1.4.1")
+    implementation("androidx.media3:media3-ui:1.4.1")
+
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
