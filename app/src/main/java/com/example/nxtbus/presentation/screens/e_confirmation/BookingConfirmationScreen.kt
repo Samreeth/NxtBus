@@ -242,7 +242,7 @@ private fun ThankYouHeader() {
         LottieSuccessAnimation(size = 120.dp, loop = false)
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "Thank You !",
+            text = "Booking Successful",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold,
             color = Color(0xFF5C3B1E)

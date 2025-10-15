@@ -12,6 +12,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.nxtbus.presentation.navigation.bottomNavigationItems
 import com.example.nxtbus.presentation.theme.PrimaryBlue
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.nxtbus.presentation.navigation.Screen
 
 
 @Composable
@@ -47,9 +49,19 @@ fun BottomNavigationBar(
                 },
                 selected = isSelected,
                 onClick = {
-                    if (!isSelected) {
+                    // Always navigate to Home from anywhere
+                    if (item.screen == Screen.Home) {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                            restoreState = false
+                        }
+                    } else if (!isSelected) {
+                        // Standard behavior for other items: keep one instance and restore state
                         navController.navigate(item.screen.route) {
-                            popUpTo(navController.graph.startDestinationId) {
+                            popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
                             launchSingleTop = true

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.nxtbus.presentation.components.BottomNavigationBar
+import com.example.nxtbus.presentation.navigation.Screen
 import com.example.nxtbus.presentation.theme.PrimaryBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -111,7 +112,10 @@ fun ProfileScreen(
                         icon = Icons.Default.History,
                         title = "Booking History",
                         subtitle = "View all your past bookings"
-                    ) { /* Navigate to booking history */ }
+                    ) {
+                        // Navigate to My Tickets screen
+                        navController.navigate(Screen.MyTickets.route)
+                    }
 
                     Divider()
 
